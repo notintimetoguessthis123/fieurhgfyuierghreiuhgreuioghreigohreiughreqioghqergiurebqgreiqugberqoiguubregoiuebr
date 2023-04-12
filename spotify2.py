@@ -78,10 +78,10 @@ def callback():
             print(total_time)
                 
             img_data = requests.get(img).content
-            with open('C:\\Temp\\temp.jpg', 'wb') as handler:
+            with open('C:\\temp.jpg', 'wb') as handler:
                 handler.write(img_data)
                 
-            image = Image.open("C:\\Temp\\temp.jpg")
+            image = Image.open("C:\\temp.jpg")
             image2 = image.resize((2560, 1440))
             blurred_image = image2.filter(ImageFilter.GaussianBlur(radius=40))
             enhancer = ImageEnhance.Brightness(blurred_image)
@@ -99,11 +99,10 @@ def callback():
             blurred_image.save("C:\\Temp\\temp2.jpg",quality=100)
                 
             SPI_SETDESKWALLPAPER = 20 
-            ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, "C:\\Temp\\temp2.jpg" , 3)
+            ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, "C:\\temp2.jpg" , 3)
             time.sleep(5)    
     except:
-        callback()
-    return json.dumps(res.json()['access_token'])
+        return redirect("http://localhost:3000/login", code=302)
 
 
 if __name__ == '__main__':
