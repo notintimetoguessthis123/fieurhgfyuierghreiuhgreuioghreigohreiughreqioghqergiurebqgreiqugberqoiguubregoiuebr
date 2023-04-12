@@ -1,0 +1,21 @@
+go to microsoft store
+search python, downloaad python 3.10
+now on ur taskbar, sarch 'cmd' then run it as admin
+type in the following:
+
+pip install flask
+pip install requests_oauthlib
+pip install pillow
+
+now move main.py to your C:
+open file explorer, click this pc, then click C:
+then paste the file in there
+go back to the command prompt and type:
+
+python main.py
+
+now go to:
+
+http://localhost:3000/login
+
+and login and it should work
