@@ -53,57 +53,58 @@ def callback():
             'redirect_uri': REDIRECT_URI
         })
     token  = res.json()['access_token']
+    print(token)
     endpoint = "https://api.spotify.com/v1/me/player/currently-playing"
     spotifyHeaders = {'Authorization':'Bearer ' + token}
-    requestAmount = 1
-    while True:
-        curSong = requests.get(endpoint, headers=spotifyHeaders)
-        curSongJson = curSong.json()
-        print(curSong.status_code)
-        print(curSong.text)
+    try:
+        while True:
+            curSong = requests.get(endpoint, headers=spotifyHeaders)
+            print(curSong.text)
+            print(curSong.status_code)
+            curSongJson = curSong.json()
 
-        curSong = requests.get(endpoint, headers=spotifyHeaders)
+            curSong = requests.get(endpoint, headers=spotifyHeaders)
 
-        currentSong = GrabSpotifyCurSong(curSongJson)
-        currentArtist = GrabSpotifyCurArtist(curSongJson)
-        img = GrabCurrentSongImage(curSongJson)
-        current_time = GrabCurrentSongTimestamp(curSongJson)
-        total_time = GrabTotalSongTimestamp(curSongJson)
+            currentSong = GrabSpotifyCurSong(curSongJson)
+            currentArtist = GrabSpotifyCurArtist(curSongJson)
+            img = GrabCurrentSongImage(curSongJson)
+            current_time = GrabCurrentSongTimestamp(curSongJson)
+            total_time = GrabTotalSongTimestamp(curSongJson)
 
-        print(currentSong)
-        print(currentArtist)
-        print(img)
-        print(current_time)
-        print(total_time)
-            
-        img_data = requests.get(img).content
-        with open('C:\\Temp\\temp.jpg', 'wb') as handler:
-            handler.write(img_data)
-            
-        image = Image.open("C:\\Temp\\temp.jpg")
-        image2 = image.resize((2560, 1440))
-        blurred_image = image2.filter(ImageFilter.GaussianBlur(radius=40))
-        enhancer = ImageEnhance.Brightness(blurred_image)
-        blurred_image = enhancer.enhance(.3)
-        blurred_image.paste(image, (960, 400))
-        myFont = ImageFont.truetype('C:\\Users\\billy\\Downloads\\Spotify-Font\\GothamMedium.ttf', 40)
-        d1 = ImageDraw.Draw(blurred_image)
-        try:
-            d1.text(((2560 / 2) - (d1.textlength(currentSong.lower(),font=myFont) / 2), 10), currentSong.lower(), font=myFont, fill =(255, 255, 255))  
-            d1.text(((2560 / 2) - (d1.textlength(currentArtist.lower(),font=myFont) / 2), 55), currentArtist.lower(), font=myFont, fill =(255, 255, 255))  
-        except:
-            d1.text(((2560 / 2) - (d1.textlength(currentSong.lower(),font=myFont) / 2), 10), currentSong.lower(), font=myFont, stroke_fill=(255,255,255), fill=255)  
-            d1.text(((2560 / 2) - (d1.textlength(currentArtist.lower(),font=myFont) / 2), 55), currentArtist.lower(), font=myFont, stroke_fill=(255,255,255), fill=255)  
-            
-        blurred_image.save("C:\\Temp\\temp2.jpg",quality=100)
-            
-        SPI_SETDESKWALLPAPER = 20 
-        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, "C:\\Temp\\temp2.jpg" , 3)
-        time.sleep(5)    
+            print(currentSong)
+            print(currentArtist)
+            print(img)
+            print(current_time)
+            print(total_time)
+                
+            img_data = requests.get(img).content
+            with open('C:\\Temp\\temp.jpg', 'wb') as handler:
+                handler.write(img_data)
+                
+            image = Image.open("C:\\Temp\\temp.jpg")
+            image2 = image.resize((2560, 1440))
+            blurred_image = image2.filter(ImageFilter.GaussianBlur(radius=40))
+            enhancer = ImageEnhance.Brightness(blurred_image)
+            blurred_image = enhancer.enhance(.3)
+            blurred_image.paste(image, (960, 400))
+            myFont = ImageFont.truetype('C:\\Windows\\Fonts\\Verdana.ttf', 40)
+            d1 = ImageDraw.Draw(blurred_image)
+            try:
+                d1.text(((2560 / 2) - (d1.textlength(currentSong.lower(),font=myFont) / 2), 10), currentSong.lower(), font=myFont, fill =(255, 255, 255))  
+                d1.text(((2560 / 2) - (d1.textlength(currentArtist.lower(),font=myFont) / 2), 55), currentArtist.lower(), font=myFont, fill =(255, 255, 255))  
+            except:
+                d1.text(((2560 / 2) - (d1.textlength(currentSong.lower(),font=myFont) / 2), 10), currentSong.lower(), font=myFont, stroke_fill=(255,255,255), fill=255)  
+                d1.text(((2560 / 2) - (d1.textlength(currentArtist.lower(),font=myFont) / 2), 55), currentArtist.lower(), font=myFont, stroke_fill=(255,255,255), fill=255)  
+                
+            blurred_image.save("C:\\Temp\\temp2.jpg",quality=100)
+                
+            SPI_SETDESKWALLPAPER = 20 
+            ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, "C:\\Temp\\temp2.jpg" , 3)
+            time.sleep(5)    
+    except:
+        callback()
     return json.dumps(res.json()['access_token'])
 
-# @app.route("/start")
-# def start():
 
 if __name__ == '__main__':
     app.run(port=3000,debug=True)   
