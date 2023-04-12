@@ -96,7 +96,7 @@ def callback():
                 d1.text(((2560 / 2) - (d1.textlength(currentSong.lower(),font=myFont) / 2), 10), currentSong.lower(), font=myFont, stroke_fill=(255,255,255), fill=255)  
                 d1.text(((2560 / 2) - (d1.textlength(currentArtist.lower(),font=myFont) / 2), 55), currentArtist.lower(), font=myFont, stroke_fill=(255,255,255), fill=255)  
                 
-            blurred_image.save("C:\\Temp\\temp2.jpg",quality=100)
+            blurred_image.save("C:\\temp2.jpg",quality=100)
                 
             SPI_SETDESKWALLPAPER = 20 
             ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, "C:\\temp2.jpg" , 3)
