@@ -52,7 +52,7 @@ def callback():
             'code': code,
             'redirect_uri': REDIRECT_URI
         })
-    token  = res.json()['access_token']
+    token = json.dumps(res.json()['access_token'])
     print(token)
     endpoint = "https://api.spotify.com/v1/me/player/currently-playing"
     spotifyHeaders = {'Authorization':'Bearer ' + token}
@@ -107,4 +107,4 @@ def callback():
 
 
 if __name__ == '__main__':
-    app.run(port=3000,debug=True)   
+    app.run(port=3000,debug=True)
