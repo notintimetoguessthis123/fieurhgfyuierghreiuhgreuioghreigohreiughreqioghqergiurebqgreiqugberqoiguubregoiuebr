@@ -52,7 +52,7 @@ def callback():
             'code': code,
             'redirect_uri': REDIRECT_URI
         })
-    token = json.dumps(res.json()['access_token'])
+    token = str(res.json()['access_token']).replace('"','')
     print(token)
     endpoint = "https://api.spotify.com/v1/me/player/currently-playing"
     spotifyHeaders = {'Authorization':'Bearer ' + token}
