@@ -34,6 +34,8 @@ def GrabCurrentSongTimestamp(curSongJson):
     return curSongJson['progress_ms']
 def GrabTotalSongTimestamp(curSongJson):
     return curSongJson['item']['duration_ms']
+def GrabIsPlaying(curSongJson):
+    return bool(curSongJson['is_playing'])
 
 @app.route("/login")
 def login():
@@ -70,6 +72,7 @@ def callback():
             img = GrabCurrentSongImage(curSongJson)
             current_time = GrabCurrentSongTimestamp(curSongJson)
             total_time = GrabTotalSongTimestamp(curSongJson)
+            is_playing = GrabIsPlaying(curSongJson)
 
             print(currentSong)
             print(currentArtist)
@@ -98,13 +101,14 @@ def callback():
                 
             blurred_image.save("C:\\Temp\\temp2.jpg",quality=100)
                 
-            SPI_SETDESKWALLPAPER = 20 
-            ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, "C:\\Temp\\temp2.jpg" , 3)
+            SPI_SETDESKWALLPAPER = 20
+            if is_playing:
+                ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, "C:\\Temp\\temp2.jpg" , 3)
+            else:
+                ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, "" , 3)
             time.sleep(5)    
     except:
         return redirect("http://localhost:3000/login", code=302)
-    return json.dumps(res.json()['access_token'])
-
 
 if __name__ == '__main__':
     app.run(port=3000,debug=True)
